@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SE_Script", "SE_Script.csproj", "{21E12EC1-0A86-40F1-9605-5CB02ECDB1AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{21E12EC1-0A86-40F1-9605-5CB02ECDB1AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21E12EC1-0A86-40F1-9605-5CB02ECDB1AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21E12EC1-0A86-40F1-9605-5CB02ECDB1AE}.Debug|x64.ActiveCfg = Debug|x64
+		{21E12EC1-0A86-40F1-9605-5CB02ECDB1AE}.Debug|x64.Build.0 = Debug|x64
+		{21E12EC1-0A86-40F1-9605-5CB02ECDB1AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21E12EC1-0A86-40F1-9605-5CB02ECDB1AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21E12EC1-0A86-40F1-9605-5CB02ECDB1AE}.Release|x64.ActiveCfg = Release|x64
+		{21E12EC1-0A86-40F1-9605-5CB02ECDB1AE}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E463773A-4EB4-4377-83E0-4C27CE083A0D}
+	EndGlobalSection
+EndGlobal
