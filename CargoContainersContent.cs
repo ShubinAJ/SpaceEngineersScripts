@@ -67,6 +67,9 @@ namespace CargoContainersContent
             List<IMyInventory> ContainersInventories;
             StringBuilder sb = new StringBuilder();
 
+            int maxSymbolCount = 50;
+            float maxItemCount = 2000000f;
+
             public Cargo()
             {
                 OresLCD = myScript.GridTerminalSystem.GetBlockWithName(lcdNameOres) as IMyTextPanel;
@@ -83,8 +86,8 @@ namespace CargoContainersContent
 
             public StringBuilder ProgressBar(MyFixedPoint curItemCount)
             {
-                int maxSymbolCount = 50;
-                float maxItemCount = 20000f;
+                //int maxSymbolCount = 50;
+                //float maxItemCount = 2000000f;
                 sb.Clear();
                 int curSymbolCount = 0;
                 int curDotCount = 0;
@@ -105,7 +108,7 @@ namespace CargoContainersContent
                 sb.Append('[');
                 for (int i = 0; i < curSymbolCount; i++)
                 {
-                    sb.Append('I');
+                    sb.Append('1');
                 }
                 for (int j = 0; j < curDotCount; j++)
                 {
@@ -166,6 +169,7 @@ namespace CargoContainersContent
                     if (item.Type.TypeId == Ores)
                     {
                         OresLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount) + "\n", true);
+                        //OresLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount) + " " + "/" + " " + maxItemCount + "\n", true);
                         OresLCD.WriteText(ProgressBar(Amount).ToString() + "\n", true);
                     }
                     else if (item.Type.TypeId == Ingots)
@@ -173,11 +177,13 @@ namespace CargoContainersContent
                         if (item.Type.SubtypeId == "Thorium")
                         {
                             IngotsLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount, 2) + "\n", true);
+                            //IngotsLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount, 2) + " " + "/" + " " + maxItemCount + "\n", true);
                             IngotsLCD.WriteText(ProgressBar(Amount).ToString() + "\n", true);
                         }
                         else
                         {
                             IngotsLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount) + "\n", true);
+                            //IngotsLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount) + " " + "/" + " " + maxItemCount + "\n", true);
                             IngotsLCD.WriteText(ProgressBar(Amount).ToString() + "\n", true);
                         }
 
