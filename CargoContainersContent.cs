@@ -35,7 +35,8 @@ namespace CargoContainersContent
 
         public void Main(string args)
         {
-            c1.ShowItems();
+            //c1.ShowItems();
+            c1.ShowItems(c1.GetAllItems());
             tickCount = tickCount + 1;
             timePassed = tickCount * (100 / 60);
             c1.ToolsLCD.WriteText("\n" + "Time Passed: " + timePassed + " s" + "\n", true);
@@ -67,8 +68,15 @@ namespace CargoContainersContent
             List<IMyInventory> ContainersInventories;
             StringBuilder sb = new StringBuilder();
 
+
+            List<IMyRefinery> allRefineries;
+            List<IMyRefinery> bigRefineries;
+            List<IMyRefinery> smallRefineries;
+
+
             int maxSymbolCount = 50;
             float maxItemCount = 2000000f;
+
 
             public Cargo()
             {
@@ -80,6 +88,12 @@ namespace CargoContainersContent
                 myScript.GridTerminalSystem.GetBlocks(Blocks);
                 ContainerItems = new List<MyInventoryItem>();
                 ContainersInventories = new List<IMyInventory>();
+
+
+                List<IMyRefinery> allRefineries = new List<IMyRefinery>();
+                List<IMyRefinery> refineries = new List<IMyRefinery>();
+                List<IMyRefinery> smallRefineries = new List<IMyRefinery>();
+
 
             }
 
@@ -118,15 +132,15 @@ namespace CargoContainersContent
                 return sb;
             }
 
-            public void ShowItems()
+            public  List<MyInventoryItem> GetAllItems()
             {
                 IMyInventory ContainerInventory;
-                MyFixedPoint Amount = 0;
+                //MyFixedPoint Amount = 0;
                 OresLCD.WriteText("Ores:" + "\n", false);
                 IngotsLCD.WriteText("Ingots:" + "\n", false);
                 ComponentsLCD.WriteText("Components:" + "\n", false);
                 ToolsLCD.WriteText("Tools:" + "\n", false);
-
+                ToolsLCD.WriteText("Tools:" + maxItemCount + "\n", true);
                 foreach (IMyTerminalBlock Block in Blocks)
                 {
                     if (Block.HasInventory & Block.InventoryCount > 1)
@@ -148,28 +162,61 @@ namespace CargoContainersContent
 
                 ContainerItems = ContainerItems.GroupBy(x => x.Type).Select(x => x.First()).ToList();
 
-                foreach (MyInventoryItem item in ContainerItems)
+                return ContainerItems;
+            }
+
+            public void SortOres(List<IMyInventoryItem> ContItems)
+            {
+                myScript.GridTerminalSystem.GetBlocksOfType<IMyRefinery>(allRefineries);
+                foreach (IMyRefinery refinery in allRefineries)
+                {
+
+                }
+
+            }
+
+            public void ShowItems(List<MyInventoryItem> ContItems)
+            {
+                //IMyInventory ContainerInventory;
+                //MyFixedPoint Amount = 0;
+                //OresLCD.WriteText("Ores:" + "\n", false);
+                //IngotsLCD.WriteText("Ingots:" + "\n", false);
+                //ComponentsLCD.WriteText("Components:" + "\n", false);
+                //ToolsLCD.WriteText("Tools:" + "\n", false);
+                //ToolsLCD.WriteText("Tools:" + maxItemCount + "\n", true);
+                //foreach (IMyTerminalBlock Block in Blocks)
+                //{
+                //    if (Block.HasInventory & Block.InventoryCount > 1)
+                //    {
+                //        for (int i = 0; i < Block.InventoryCount; i++)
+                //        {
+                //            ContainerInventory = Block.GetInventory(i);
+                //            ContainersInventories.Add(ContainerInventory);
+                //            ContainerInventory.GetItems(ContainerItems);
+                //        }
+                //    }
+                //    if (Block.HasInventory & Block.InventoryCount < 2)
+                //    {
+                //        ContainerInventory = Block.GetInventory();
+                //        ContainersInventories.Add(ContainerInventory);
+                //        ContainerInventory.GetItems(ContainerItems);
+                //    }
+                //}
+
+                //ContainerItems = ContainerItems.GroupBy(x => x.Type).Select(x => x.First()).ToList();
+
+                //foreach (MyInventoryItem item in ContainerItems)
+                MyFixedPoint Amount = 0;
+
+                foreach (MyInventoryItem item in ContItems)
                 {
                     foreach (IMyInventory inventory in ContainersInventories)
                     {
                         Amount += inventory.GetItemAmount(item.Type);
                     }
-                    //if (item.Type.TypeId == Ores) OresLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount) + "\n", true);
-                    //else if (item.Type.TypeId == Ingots)
-                    //{
-                    //    if (item.Type.SubtypeId == "Thorium") IngotsLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount, 2) + "\n", true);
-                    //    else IngotsLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount) + "\n", true);
-                    //} 
-                    //else if (item.Type.TypeId == Components) ComponentsLCD.WriteText(item.Type.SubtypeId + " " + Amount + "\n", true);
-                    //else if (item.Type.TypeId == OxygenContainerObject) ToolsLCD.WriteText(item.Type.SubtypeId + " " + Amount + "\n", true);
-                    //else if (item.Type.TypeId == ConsumableItem) ToolsLCD.WriteText(item.Type.SubtypeId + " " + Amount + "\n", true);
-                    //else if (item.Type.TypeId == AmmoMagazine) ToolsLCD.WriteText(item.Type.SubtypeId + " " + Amount + "\n", true);
-                    //else if (item.Type.TypeId == PhysicalGunObject) ToolsLCD.WriteText(item.Type.SubtypeId + " " + Amount + "\n", true);
-                    //Amount = 0;
                     if (item.Type.TypeId == Ores)
                     {
                         OresLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount) + "\n", true);
-                        //OresLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount) + " " + "/" + " " + maxItemCount + "\n", true);
                         OresLCD.WriteText(ProgressBar(Amount).ToString() + "\n", true);
                     }
                     else if (item.Type.TypeId == Ingots)
@@ -177,13 +224,11 @@ namespace CargoContainersContent
                         if (item.Type.SubtypeId == "Thorium")
                         {
                             IngotsLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount, 2) + "\n", true);
-                            //IngotsLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount, 2) + " " + "/" + " " + maxItemCount + "\n", true);
                             IngotsLCD.WriteText(ProgressBar(Amount).ToString() + "\n", true);
                         }
                         else
                         {
                             IngotsLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount) + "\n", true);
-                            //IngotsLCD.WriteText(item.Type.SubtypeId + " " + Math.Round((decimal)Amount) + " " + "/" + " " + maxItemCount + "\n", true);
                             IngotsLCD.WriteText(ProgressBar(Amount).ToString() + "\n", true);
                         }
 
@@ -191,30 +236,25 @@ namespace CargoContainersContent
                     else if (item.Type.TypeId == Components)
                     {
                         ComponentsLCD.WriteText(item.Type.SubtypeId + " " + Amount + "\n", true);
-                        //ComponentsLCD.WriteText(ProgressBar(Amount).ToString() + "\n", true);
                     }
                     else if (item.Type.TypeId == OxygenContainerObject)
                     {
                         ToolsLCD.WriteText(item.Type.SubtypeId + " " + Amount + "\n", true);
-                        //ToolsLCD.WriteText(ProgressBar(Amount).ToString() + "\n", true);
                     }
 
                     else if (item.Type.TypeId == ConsumableItem)
                     {
                         ToolsLCD.WriteText(item.Type.SubtypeId + " " + Amount + "\n", true);
-                        //ToolsLCD.WriteText(ProgressBar(Amount).ToString() + "\n", true);
                     }
 
 
                     else if (item.Type.TypeId == AmmoMagazine)
                     {
                         ToolsLCD.WriteText(item.Type.SubtypeId + " " + Amount + "\n", true);
-                        //ToolsLCD.WriteText(ProgressBar(Amount).ToString() + "\n", true);
                     }
                     else if (item.Type.TypeId == PhysicalGunObject) 
                     {
                         ToolsLCD.WriteText(item.Type.SubtypeId + " " + Amount + "\n", true);
-                        //ToolsLCD.WriteText(ProgressBar(Amount).ToString() + "\n", true);
                     } 
                     Amount = 0;
                 }
